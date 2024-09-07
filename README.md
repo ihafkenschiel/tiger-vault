@@ -1,50 +1,76 @@
-# Welcome to your Expo app 👋
+# Building a Web3 Wallet with React Native and WalletConnect: A Journey Begins
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+In the ever-evolving landscape of blockchain technology, creating seamless and secure ways for users to interact with decentralized applications (dApps) is crucial. Today, I'm excited to share the beginnings of our journey in building a Web3 wallet using React Native and WalletConnect. This project, which we're calling TigerVault, aims to provide a user-friendly mobile interface for connecting to and interacting with various blockchain networks.
 
-## Get started
+## Project Goals
 
-1. Install dependencies
+Our primary objectives for TigerVault are:
 
-   ```bash
-   npm install
-   ```
+1. Create a mobile-first Web3 wallet experience
+2. Implement secure and easy-to-use wallet connection functionality
+3. Support multiple blockchain networks
+4. Provide a foundation for future dApp interactions
 
-2. Start the app
+## Tech Stack
 
-   ```bash
-    npx expo start
-   ```
+For this project, we've chosen a powerful and flexible tech stack:
 
-In the output, you'll find options to open the app in a
+- **React Native**: For cross-platform mobile development
+- **Expo**: To streamline the development and build process
+- **WalletConnect**: For secure wallet connections
+- **Wagmi**: A collection of React Hooks for Ethereum
+- **TypeScript**: For type-safe code
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## What We've Accomplished So Far
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### 1. Project Setup
 
-## Get a fresh project
+We started by setting up a new React Native project using Expo, which provides a robust foundation for mobile app development. We've configured the project with TypeScript for improved code quality and developer experience.
 
-When you're ready, run:
+### 2. WalletConnect Integration
 
-```bash
-npm run reset-project
-```
+The core of our wallet functionality revolves around WalletConnect. We've successfully integrated WalletConnect's AppKit for React Native, which allows us to:
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+- Connect to multiple wallet providers
+- Support various blockchain networks (Ethereum, Polygon, Arbitrum)
+- Provide a consistent connection experience across different wallets
 
-## Learn more
+### 3. UI Implementation
 
-To learn more about developing your project with Expo, look at the following resources:
+We've implemented a basic UI that includes:
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+- A main screen with a "Connect Wallet" button
+- A modal that displays available wallet options for connection
 
-## Join the community
+### 4. Platform-Specific Configurations
 
-Join our community of developers creating universal apps.
+To ensure our app can detect and interact with installed wallets, we've added necessary configurations for both iOS and Android:
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- iOS: Updated `Info.plist` with supported wallet schemes
+- Android: Created a custom plugin to modify the Android manifest for wallet queries
+
+## Challenges and Learnings
+
+During this initial phase, we encountered and overcame several challenges:
+
+1. **Dependency Management**: Ensuring all required packages are correctly installed and compatible.
+2. **TypeScript Configuration**: Properly setting up TypeScript with React Native and third-party libraries.
+3. **Native Modules**: Understanding and implementing platform-specific code for wallet detection.
+
+## Next Steps
+
+As we continue to develop TigerVault, our upcoming focus areas include:
+
+1. Implementing wallet state management
+2. Adding support for viewing account balances across different networks
+3. Creating a transaction signing and sending interface
+4. Enhancing the UI/UX for a more polished wallet experience
+5. Implementing security features like biometric authentication
+
+## Conclusion
+
+We're excited about the progress we've made in laying the foundation for TigerVault. By leveraging powerful tools like React Native, Expo, and WalletConnect, we're well on our way to creating a robust and user-friendly Web3 wallet.
+
+Stay tuned for more updates as we continue to build and refine TigerVault. We'll be sharing our progress, challenges, and learnings along the way.
+
+Happy coding, and welcome to the future of decentralized finance!

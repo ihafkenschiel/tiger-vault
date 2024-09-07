@@ -7,6 +7,9 @@ import { Web3ModalProvider } from "../components/Web3Modal";
 import MockWallet from "../components/MockWallet";
 import * as Linking from "expo-linking";
 import { useRouter } from "expo-router";
+import React from "react";
+import { View } from "react-native";
+import Toast from "react-native-toast-message";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -71,6 +74,7 @@ function RootLayoutNav() {
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="modal" options={{ presentation: "modal" }} />
         </Stack>
+        <Toast />
       </ThemeProvider>
     </Web3ModalProvider>
   );

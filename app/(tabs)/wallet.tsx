@@ -3,11 +3,11 @@ import {
   View,
   Text,
   StyleSheet,
-  Alert,
   FlatList,
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
+import Toast from "react-native-toast-message";
 import WalletInfo from "../../components/MockWallet/WalletInfo";
 import SendTransaction from "../../components/MockWallet/SendTransaction";
 import WalletController from "../../components/MockWallet/WalletController";
@@ -43,12 +43,20 @@ export default function WalletScreen() {
   const { open } = useWeb3Modal();
 
   const fetchBalance = async () => {
-    if (isConnected && !useMockWallet) {
-      setBalance(wagmiBalance?.formatted || "0");
-    } else if (useMockWallet) {
-      const walletController = WalletController.getInstance();
-      const controllerBalance = await walletController.getBalance();
-      setBalance(controllerBalance);
+    try {
+      if (isConnected && !useMockWallet) {
+        setBalance(wagmiBalance?.formatted || "0");
+      } else if (useMockWallet) {
+        const walletController = WalletController.getInstance();
+        const controllerBalance = await walletController.getBalance();
+        setBalance(controllerBalance);
+      }
+    } catch (error) {
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "Failed to fetch balance",
+      });
     }
   };
 
@@ -65,7 +73,6 @@ export default function WalletScreen() {
           value: parseEther(amount),
         });
         console.log("Transaction sent:", result);
-        // Add the transaction to the list
         setTransactions((prev: any) => [
           {
             hash: result,
@@ -76,10 +83,14 @@ export default function WalletScreen() {
           },
           ...prev,
         ]);
+        Toast.show({
+          type: "success",
+          text1: "Success",
+          text2: "Transaction sent successfully",
+        });
       } else if (useMockWallet) {
         const walletController = WalletController.getInstance();
         await walletController.sendTransaction(to, amount);
-        // Add the mock transaction to the list
         setTransactions((prev) => [
           {
             hash: `mock-${Date.now()}`,
@@ -90,35 +101,70 @@ export default function WalletScreen() {
           },
           ...prev,
         ]);
+        Toast.show({
+          type: "success",
+          text1: "Success",
+          text2: "Mock transaction sent successfully",
+        });
       }
-      Alert.alert("Success", "Transaction sent successfully");
       await fetchBalance();
     } catch (error: any) {
-      Alert.alert("Error", error?.message || "Failed to send transaction");
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: error?.message || "Failed to send transaction",
+      });
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleConnectWallet = async () => {
-    if (useMockWallet) {
-      // Connect mock wallet
-      const walletController = WalletController.getInstance();
-      await walletController.initializeWallet();
-    } else {
-      // Open Web3Modal
-      await open();
+    try {
+      if (useMockWallet) {
+        const walletController = WalletController.getInstance();
+        await walletController.initializeWallet();
+        Toast.show({
+          type: "success",
+          text1: "Success",
+          text2: "Mock wallet connected",
+        });
+      } else {
+        await open();
+      }
+    } catch (error: any) {
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: error?.message || "Failed to connect wallet",
+      });
     }
   };
 
   const handleDisconnectWallet = async () => {
-    if (useMockWallet) {
-      // Disconnect mock wallet
-      setBalance("0");
-      setTransactions([]);
-    } else {
-      // Disconnect real wallet
-      await disconnect();
+    try {
+      if (useMockWallet) {
+        setBalance("0");
+        setTransactions([]);
+        Toast.show({
+          type: "success",
+          text1: "Success",
+          text2: "Mock wallet disconnected",
+        });
+      } else {
+        await disconnect();
+        Toast.show({
+          type: "success",
+          text1: "Success",
+          text2: "Wallet disconnected",
+        });
+      }
+    } catch (error: any) {
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: error?.message || "Failed to disconnect wallet",
+      });
     }
   };
 

@@ -40,12 +40,12 @@ export default function RootLayout() {
   const router = useRouter();
 
   useEffect(() => {
-    const handleDeepLink = (event: { url: string }) => {
+    const handleDeepLink = async (event: { url: string }) => {
       const { path, queryParams } = Linking.parse(event.url);
       if (path === "wc" && queryParams && typeof queryParams.uri === "string") {
-        MockWallet.getInstance().pair(queryParams.uri);
-        // Optionally navigate to a specific screen in your app
-        // router.push('/wallet-screen');
+        await MockWallet.getInstance().pair(queryParams.uri);
+        // Navigate to the wallet screen
+        router.push("/wallet");
       }
     };
 

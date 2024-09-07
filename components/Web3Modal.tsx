@@ -7,6 +7,7 @@ import {
 } from "@web3modal/wagmi-react-native";
 import { WagmiProvider } from "wagmi";
 import { arbitrum, mainnet, polygon } from "wagmi/chains";
+import MockWallet from "./MockWallet";
 
 // 0. Setup queryClient
 const queryClient = new QueryClient();
@@ -31,21 +32,23 @@ const chains = [mainnet, polygon, arbitrum] as const;
 const wagmiConfig = defaultWagmiConfig({ chains, projectId, metadata });
 
 // 3. Create modal
+const customWallets = [
+  {
+    id: "mockWallet",
+    name: "Mock Test Wallet",
+    homepage: "https://mockwallet.example",
+    image_url: "https://mockwallet.example/icon.png",
+    mobile_link: "tiger-vault://wc",
+    webapp_link: "https://mockwallet.example",
+  },
+];
+
 createWeb3Modal({
   projectId,
   wagmiConfig,
   defaultChain: mainnet, // Optional
   enableAnalytics: true, // Optional - defaults to your Cloud configuration
-  customWallets: [
-    {
-      id: "mockWallet",
-      name: "Mock Test Wallet",
-      homepage: "https://example.com",
-      image_url: "https://example.com/mock-wallet-icon.png",
-      mobile_link: "mock-wallet://",
-      webapp_link: "https://example.com/mock-wallet-web",
-    },
-  ],
+  customWallets: customWallets,
   featuredWalletIds: [
     "mockWallet", // ID of our custom mock wallet
     // Add other wallet IDs as needed

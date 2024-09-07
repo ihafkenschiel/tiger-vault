@@ -35,10 +35,7 @@
       "output": "static",
       "favicon": "./assets/images/favicon.png"
     },
-    "plugins": [
-      "./queries.js",
-      "expo-build-properties"
-    ],
+    "plugins": ["./queries.js", "expo-build-properties"],
     "experiments": {
       "typedRoutes": true
     }

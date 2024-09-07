@@ -36,6 +36,24 @@ createWeb3Modal({
   wagmiConfig,
   defaultChain: mainnet, // Optional
   enableAnalytics: true, // Optional - defaults to your Cloud configuration
+  customWallets: [
+    {
+      id: "mockWallet",
+      name: "Mock Test Wallet",
+      homepage: "https://example.com",
+      image_url: "https://example.com/mock-wallet-icon.png",
+      mobile_link: "mock-wallet://",
+      webapp_link: "https://example.com/mock-wallet-web",
+    },
+  ],
+  featuredWalletIds: [
+    "mockWallet", // ID of our custom mock wallet
+    // Add other wallet IDs as needed
+  ],
+  includeWalletIds: [
+    "mockWallet", // ID of our custom mock wallet
+    // Add other test wallet IDs as needed
+  ],
 });
 
 export function Web3ModalProvider({ children }: { children: React.ReactNode }) {

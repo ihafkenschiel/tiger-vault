@@ -1,27 +1,35 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { View, Text } from "react-native";
+import { useAccount } from "wagmi";
 import WalletController from "./WalletController";
 
-const WalletInfo: React.FC = () => {
-  const [walletStatus, setWalletStatus] = useState("Disconnected");
-  const [address, setAddress] = useState("");
+interface WalletInfoProps {
+  useMockWallet: boolean;
+}
 
-  useEffect(() => {
-    const checkWalletStatus = async () => {
-      const wallet = await WalletController.getInstance().initializeWallet();
-      if (wallet) {
-        setWalletStatus("Connected");
-        // Get the wallet address (this is a placeholder, implement the actual method)
-        // setAddress(await wallet.getAddress());
-      }
-    };
-    checkWalletStatus();
-  }, []);
+const WalletInfo: React.FC<WalletInfoProps> = ({ useMockWallet }) => {
+  const { address, isConnected } = useAccount();
+
+  const getWalletStatus = () => {
+    if (useMockWallet) {
+      return WalletController.getInstance().getWeb3Wallet()
+        ? "Connected"
+        : "Disconnected";
+    }
+    return isConnected ? "Connected" : "Disconnected";
+  };
+
+  const getWalletAddress = () => {
+    if (useMockWallet) {
+      return "Mock Wallet Address";
+    }
+    return address || "Not connected";
+  };
 
   return (
     <View>
-      <Text>Wallet Status: {walletStatus}</Text>
-      {address && <Text>Address: {address}</Text>}
+      <Text>Wallet Status: {getWalletStatus()}</Text>
+      <Text>Address: {getWalletAddress()}</Text>
     </View>
   );
 };

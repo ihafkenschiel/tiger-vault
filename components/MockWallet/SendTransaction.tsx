@@ -1,11 +1,22 @@
 import React, { useState } from "react";
-import { View, TextInput, Button, Alert, StyleSheet } from "react-native";
+import {
+  View,
+  TextInput,
+  Button,
+  Alert,
+  StyleSheet,
+  ActivityIndicator,
+} from "react-native";
 
 interface SendTransactionProps {
   onSend: (to: string, amount: string) => Promise<void>;
+  isLoading: boolean; // Add this line
 }
 
-const SendTransaction: React.FC<SendTransactionProps> = ({ onSend }) => {
+const SendTransaction: React.FC<SendTransactionProps> = ({
+  onSend,
+  isLoading,
+}) => {
   const [to, setTo] = useState("");
   const [amount, setAmount] = useState("");
 
@@ -14,7 +25,7 @@ const SendTransaction: React.FC<SendTransactionProps> = ({ onSend }) => {
       Alert.alert("Error", "Please enter both recipient address and amount");
       return;
     }
-    console.log(`Sending ${amount} to ${to}`); // Add this log
+    console.log(`Sending ${amount} to ${to}`);
     await onSend(to, amount);
     setTo("");
     setAmount("");
@@ -35,7 +46,11 @@ const SendTransaction: React.FC<SendTransactionProps> = ({ onSend }) => {
         onChangeText={setAmount}
         keyboardType="numeric"
       />
-      <Button title="Send" onPress={handleSend} />
+      {isLoading ? (
+        <ActivityIndicator size="small" color="#0000ff" />
+      ) : (
+        <Button title="Send" onPress={handleSend} />
+      )}
     </View>
   );
 };

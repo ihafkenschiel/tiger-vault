@@ -5,30 +5,34 @@
 We've made significant strides in developing TigerVault:
 
 1. **Wallet Functionality**: Implemented basic wallet operations including balance checking and sending transactions.
-2. **UI Enhancements**: Created a more comprehensive wallet screen with connection status, balance display, and transaction input fields.
+2. **UI Enhancements**: Created a comprehensive wallet screen with connection status, balance display, and transaction input fields.
 3. **Mock Wallet Integration**: Developed a mock wallet for testing purposes, integrated with WalletConnect.
-4. **Routing and Navigation**: Set up tab-based navigation using Expo Router for a smoother user experience.
+4. **Real/Mock Wallet Toggle**: Added ability to switch between real and mock wallet functionality.
+5. **Transaction History**: Implemented a basic transaction history display.
 
 ## Current Features
 
-- Connect/Disconnect wallet functionality
+- Connect/Disconnect wallet functionality for both real and mock wallets
 - Display wallet address and balance
-- Send transaction interface (currently simulated)
-- Tab-based navigation (Home, Explore, Wallet)
+- Send transaction interface (working for both real and mock wallets)
+- Transaction history view
+- Tab-based navigation (TigerVault, Wallet, Explore)
 - WalletConnect integration for connecting to external wallets
+- Toggle between real and mock wallet functionality
 
 ## Next Steps
 
-1. Implement real blockchain interactions for transactions
-2. Add transaction history view
-3. Enhance error handling and user feedback
-4. Implement additional security features
-5. Optimize performance and reduce bundle size
+1. Improve error handling and user feedback
+2. Enhance transaction history with pagination and more details
+3. Implement network switching functionality
+4. Add support for token transfers
+5. Implement additional security features
+6. Optimize performance and reduce bundle size
 
 ## Running the Project
 
 1. Clone the repository
-2. Run `npm install` to install dependencies
+2. Run `yarn install` to install dependencies
 3. Use `npx expo start` to run the development server
 4. Open the app in an Expo Go client or run on an emulator/simulator
 

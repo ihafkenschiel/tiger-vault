@@ -1,24 +1,25 @@
-import React, { useState, useEffect } from "react";
+import { useWeb3Modal, useWeb3ModalState } from "@web3modal/wagmi-react-native";
+import React, { useEffect, useState } from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
   ActivityIndicator,
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import Toast from "react-native-toast-message";
-import WalletInfo from "../../components/MockWallet/WalletInfo";
-import SendTransaction from "../../components/MockWallet/SendTransaction";
-import WalletController from "../../components/MockWallet/WalletController";
+import { formatEther, parseEther } from "viem";
 import {
   useAccount,
   useBalance,
-  useSendTransaction,
   useDisconnect,
+  useSendTransaction,
 } from "wagmi";
-import { parseEther, formatEther } from "viem";
-import { useWeb3Modal } from "@web3modal/wagmi-react-native";
+import EthereumInfo from "../../components/EthereumInfo";
+import SendTransaction from "../../components/MockWallet/SendTransaction";
+import WalletController from "../../components/MockWallet/WalletController";
+import WalletInfo from "../../components/MockWallet/WalletInfo";
 
 interface Transaction {
   hash: string;
@@ -41,6 +42,7 @@ export default function WalletScreen() {
   const { sendTransaction } = useSendTransaction();
   const { disconnect } = useDisconnect();
   const { open } = useWeb3Modal();
+  const { selectedNetworkId } = useWeb3ModalState();
 
   const fetchBalance = async () => {
     try {
@@ -180,6 +182,7 @@ export default function WalletScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Wallet Screen</Text>
+      <Text>Selected Network ID: {selectedNetworkId}</Text>
       <TouchableOpacity
         style={styles.button}
         onPress={() => setUseMockWallet(!useMockWallet)}
@@ -211,6 +214,7 @@ export default function WalletScreen() {
             keyExtractor={(item) => item.hash}
             style={styles.transactionList}
           />
+          {!useMockWallet && <EthereumInfo />}
         </>
       ) : (
         <TouchableOpacity style={styles.button} onPress={handleConnectWallet}>

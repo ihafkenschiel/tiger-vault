@@ -1,9 +1,9 @@
+import { REACT_APP_WALLETCONNECT_PROJECT_ID } from "@env";
 import { Core } from "@walletconnect/core";
-import { Web3Wallet, IWeb3Wallet } from "@walletconnect/web3wallet";
-import { useAccount, useBalance, useSendTransaction } from "wagmi";
-import { parseEther } from "viem";
+import { IWeb3Wallet, Web3Wallet } from "@walletconnect/web3wallet";
+import { CONFIG } from "../../config";
 
-const PROJECT_ID = "eb8227497ee1c71f4b99dcf36597ced3";
+const PROJECT_ID = REACT_APP_WALLETCONNECT_PROJECT_ID;
 
 class WalletController {
   private static instance: WalletController;
@@ -26,14 +26,7 @@ class WalletController {
         core: new Core({
           projectId: PROJECT_ID,
         }),
-        metadata: {
-          name: "TigerVault",
-          description: "A Web3 wallet for testing",
-          url: "https://tigerbytestudio.com/tiger-vault",
-          icons: [
-            "https://blog.tigerbytestudio.com/wp-content/uploads/2023/11/TigerByteStudio-Logo-Clear-1-e1699342643644.png",
-          ],
-        },
+        metadata: CONFIG.APP_METADATA,
       });
       console.log("Web3Wallet initialized");
     }

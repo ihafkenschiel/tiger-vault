@@ -1,15 +1,21 @@
+import { REACT_APP_WALLETCONNECT_PROJECT_ID } from "@env";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { DefaultTheme, ThemeProvider } from "@react-navigation/native";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import "@walletconnect/react-native-compat";
+import {
+  createWeb3Modal,
+  defaultWagmiConfig,
+  Web3Modal,
+} from "@web3modal/wagmi-react-native";
 import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
 import { useEffect } from "react";
-import { Web3ModalProvider } from "../components/Web3Modal";
-import MockWallet from "../components/MockWallet";
-import * as Linking from "expo-linking";
-import { useRouter } from "expo-router";
-import React from "react";
-import { View } from "react-native";
 import Toast from "react-native-toast-message";
+import { WagmiProvider } from "wagmi";
+import { arbitrum, mainnet, polygon } from "wagmi/chains";
+import { customWallets, Web3ModalProvider } from "../components/Web3Modal";
+import { CONFIG } from "../config";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -23,6 +29,25 @@ export const unstable_settings = {
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
+
+const queryClient = new QueryClient();
+
+const projectId = CONFIG.WALLET_CONNECT_PROJECT_ID ?? "";
+const metadata = CONFIG.APP_METADATA;
+
+const chains = [mainnet, polygon, arbitrum] as const;
+
+const wagmiConfig = defaultWagmiConfig({ chains, projectId, metadata });
+
+createWeb3Modal({
+  projectId,
+  wagmiConfig,
+  defaultChain: mainnet,
+  enableAnalytics: true,
+  customWallets: customWallets,
+  featuredWalletIds: ["mockWallet"],
+  includeWalletIds: ["mockWallet"],
+});
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -40,25 +65,6 @@ export default function RootLayout() {
     }
   }, [loaded]);
 
-  const router = useRouter();
-
-  useEffect(() => {
-    const handleDeepLink = async (event: { url: string }) => {
-      const { path, queryParams } = Linking.parse(event.url);
-      if (path === "wc" && queryParams && typeof queryParams.uri === "string") {
-        await MockWallet.getInstance().pair(queryParams.uri);
-        // Navigate to the wallet screen
-        router.push("/(tabs)/wallet");
-      }
-    };
-
-    const subscription = Linking.addEventListener("url", handleDeepLink);
-
-    return () => {
-      subscription.remove();
-    };
-  }, [router]);
-
   if (!loaded) {
     return null;
   }
@@ -69,13 +75,18 @@ export default function RootLayout() {
 function RootLayoutNav() {
   return (
     <Web3ModalProvider>
-      <ThemeProvider value={DefaultTheme}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="modal" options={{ presentation: "modal" }} />
-        </Stack>
-        <Toast />
-      </ThemeProvider>
+      <WagmiProvider config={wagmiConfig}>
+        <QueryClientProvider client={queryClient}>
+          <ThemeProvider value={DefaultTheme}>
+            <Stack>
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen name="modal" options={{ presentation: "modal" }} />
+            </Stack>
+            <Toast />
+            <Web3Modal />
+          </ThemeProvider>
+        </QueryClientProvider>
+      </WagmiProvider>
     </Web3ModalProvider>
   );
 }

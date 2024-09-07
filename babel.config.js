@@ -2,6 +2,27 @@ module.exports = function (api) {
   api.cache(true);
   return {
     presets: ["babel-preset-expo"],
-    // Remove the plugins array if you don't need any plugins
+    plugins: [
+      [
+        "module:react-native-dotenv",
+        {
+          moduleName: "@env",
+          path: ".env",
+          blacklist: null,
+          whitelist: null,
+          safe: false,
+          allowUndefined: true,
+        },
+      ],
+      [
+        "module-resolver",
+        {
+          alias: {
+            "@": "./",
+          },
+        },
+      ],
+      "react-native-reanimated/plugin",
+    ],
   };
 };

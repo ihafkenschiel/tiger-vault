@@ -7,32 +7,34 @@ import {
 } from "@web3modal/wagmi-react-native";
 import { WagmiProvider } from "wagmi";
 import { arbitrum, mainnet, polygon } from "wagmi/chains";
-import MockWallet from "./MockWallet";
+import { CONFIG } from "../config";
 
 // 0. Setup queryClient
 const queryClient = new QueryClient();
 
-// 1. Get projectId at https://cloud.walletconnect.com
+// 1. Use the existing project ID
 const projectId = "eb8227497ee1c71f4b99dcf36597ced3";
 
-// 2. Create config
+// 2. Use the existing metadata
 const metadata = {
-  name: "Web3WalletExample",
-  description: "Web3WalletExample using WalletConnect",
-  url: "https://tigerbytestudio.com",
-  icons: ["https://www.tigerbytestudio.com/images/logo.svg"],
-  redirect: {
-    native: "tiger-vault://",
-    universal: "https://tigerbytestudio.com",
-  },
+  name: "TigerVault",
+  description: "A Web3 wallet for testing",
+  url: "https://tigerbytestudio.com/tiger-vault",
+  icons: [
+    "https://blog.tigerbytestudio.com/wp-content/uploads/2023/11/TigerByteStudio-Logo-Clear-1-e1699342643644.png",
+  ],
 };
 
 const chains = [mainnet, polygon, arbitrum] as const;
 
-const wagmiConfig = defaultWagmiConfig({ chains, projectId, metadata });
+const wagmiConfig = defaultWagmiConfig({
+  chains,
+  projectId: CONFIG.WALLET_CONNECT_PROJECT_ID ?? "",
+  metadata: CONFIG.APP_METADATA,
+});
 
 // 3. Create modal
-const customWallets = [
+export const customWallets = [
   {
     id: "mockWallet",
     name: "Mock Test Wallet",
@@ -44,19 +46,13 @@ const customWallets = [
 ];
 
 createWeb3Modal({
-  projectId,
+  projectId: CONFIG.WALLET_CONNECT_PROJECT_ID ?? "",
   wagmiConfig,
-  defaultChain: mainnet, // Optional
-  enableAnalytics: true, // Optional - defaults to your Cloud configuration
+  defaultChain: mainnet,
+  enableAnalytics: true,
   customWallets: customWallets,
-  featuredWalletIds: [
-    "mockWallet", // ID of our custom mock wallet
-    // Add other wallet IDs as needed
-  ],
-  includeWalletIds: [
-    "mockWallet", // ID of our custom mock wallet
-    // Add other test wallet IDs as needed
-  ],
+  featuredWalletIds: ["mockWallet"],
+  includeWalletIds: ["mockWallet"],
 });
 
 export function Web3ModalProvider({ children }: { children: React.ReactNode }) {

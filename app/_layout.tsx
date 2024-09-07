@@ -45,7 +45,7 @@ export default function RootLayout() {
       if (path === "wc" && queryParams && typeof queryParams.uri === "string") {
         await MockWallet.getInstance().pair(queryParams.uri);
         // Navigate to the wallet screen
-        router.push("/wallet");
+        router.push("/(tabs)/wallet");
       }
     };
 
@@ -69,6 +69,7 @@ function RootLayoutNav() {
       <ThemeProvider value={DefaultTheme}>
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="modal" options={{ presentation: "modal" }} />
         </Stack>
       </ThemeProvider>
     </Web3ModalProvider>

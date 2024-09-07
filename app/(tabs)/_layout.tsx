@@ -22,11 +22,9 @@ export default function TabLayout() {
         name="index"
         options={{
           title: "TigerVault",
-          tabBarIcon: ({ color }: { color: string }) => (
-            <TabBarIcon name="code" color={color} />
-          ),
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (
-            <Link href="../modal" asChild>
+            <Link href="/modal" asChild>
               <Pressable>
                 {({ pressed }) => (
                   <FontAwesome
@@ -42,20 +40,11 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="explore"
-        options={{
-          title: "Explore",
-          tabBarIcon: ({ color }: { color: string }) => (
-            <TabBarIcon name="search" color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
         name="wallet"
         options={{
           title: "Wallet",
-          tabBarIcon: ({ color }: { color: string }) => (
-            <TabBarIcon name="wallet" color={color} />
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="google-wallet" color={color} />
           ),
         }}
       />

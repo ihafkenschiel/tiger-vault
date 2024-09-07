@@ -3,32 +3,50 @@ import { View, Text, StyleSheet, Alert } from "react-native";
 import WalletInfo from "../../components/MockWallet/WalletInfo";
 import SendTransaction from "../../components/MockWallet/SendTransaction";
 import WalletController from "../../components/MockWallet/WalletController";
+import { useAccount, useBalance, useSendTransaction } from "wagmi";
+import { parseEther } from "viem";
 
 export default function WalletScreen() {
+  const { address, isConnected } = useAccount();
+  const { data: wagmiBalance } = useBalance({ address });
   const [balance, setBalance] = useState("0");
   const [, updateState] = useState({});
   const forceUpdate = useCallback(() => updateState({}), []);
 
+  const { sendTransaction } = useSendTransaction();
+
   const fetchBalance = async () => {
-    const walletController = WalletController.getInstance();
-    const balance = await walletController.getBalance();
-    console.log(`Fetched balance: ${balance}`);
-    setBalance(balance);
+    if (isConnected && wagmiBalance) {
+      setBalance(wagmiBalance.formatted);
+    } else {
+      const walletController = WalletController.getInstance();
+      const controllerBalance = await walletController.getBalance();
+      console.log(`Fetched balance: ${controllerBalance}`);
+      setBalance(controllerBalance);
+    }
   };
 
   useEffect(() => {
     fetchBalance();
-  }, []);
+  }, [isConnected, wagmiBalance]);
 
   const handleSendTransaction = async (to: string, amount: string) => {
     try {
-      const walletController = WalletController.getInstance();
-      await walletController.sendTransaction(to, amount);
+      if (isConnected) {
+        const result = await sendTransaction({
+          to: to as `0x${string}`,
+          value: parseEther(amount),
+        });
+        console.log("Transaction sent:", result);
+      } else {
+        const walletController = WalletController.getInstance();
+        await walletController.sendTransaction(to, amount);
+      }
       Alert.alert("Success", "Transaction sent successfully");
       await fetchBalance();
       forceUpdate(); // Force a re-render
-    } catch (error) {
-      Alert.alert("Error", error.message || "Failed to send transaction");
+    } catch (error: any) {
+      Alert.alert("Error", error?.message || "Failed to send transaction");
     }
   };
 

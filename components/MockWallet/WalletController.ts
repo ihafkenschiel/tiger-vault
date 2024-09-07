@@ -1,5 +1,7 @@
 import { Core } from "@walletconnect/core";
 import { Web3Wallet, IWeb3Wallet } from "@walletconnect/web3wallet";
+import { useAccount, useBalance, useSendTransaction } from "wagmi";
+import { parseEther } from "viem";
 
 const PROJECT_ID = "eb8227497ee1c71f4b99dcf36597ced3";
 
@@ -25,10 +27,12 @@ class WalletController {
           projectId: PROJECT_ID,
         }),
         metadata: {
-          name: "Mock Test Wallet",
-          description: "A mock wallet for testing",
-          url: "https://mockwallet.example",
-          icons: ["https://mockwallet.example/icon.png"],
+          name: "TigerVault",
+          description: "A Web3 wallet for testing",
+          url: "https://tigerbytestudio.com/tiger-vault",
+          icons: [
+            "https://blog.tigerbytestudio.com/wp-content/uploads/2023/11/TigerByteStudio-Logo-Clear-1-e1699342643644.png",
+          ],
         },
       });
       console.log("Web3Wallet initialized");
@@ -36,11 +40,11 @@ class WalletController {
     return this.web3wallet;
   }
 
-  public getWeb3Wallet() {
+  public getWeb3Wallet(): IWeb3Wallet | undefined {
     return this.web3wallet;
   }
 
-  public async pair(uri: string) {
+  public async pair(uri: string): Promise<any> {
     console.log("Attempting to pair with URI:", uri);
     const web3wallet = await this.initializeWallet();
     const result = await web3wallet.pair({ uri });

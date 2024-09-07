@@ -9,6 +9,7 @@ We've made significant strides in developing TigerVault:
 3. **Mock Wallet Integration**: Developed a mock wallet for testing purposes, integrated with WalletConnect.
 4. **Real/Mock Wallet Toggle**: Added ability to switch between real and mock wallet functionality.
 5. **Transaction History**: Implemented a basic transaction history display.
+6. **Configuration Centralization**: Refactored to centralize configuration and reduce redundancy.
 
 ## Current Features
 
@@ -22,12 +23,24 @@ We've made significant strides in developing TigerVault:
 
 ## Next Steps
 
-1. Improve error handling and user feedback
+1. Implement testnet integration for real Ethereum network testing
 2. Enhance transaction history with pagination and more details
 3. Implement network switching functionality
 4. Add support for token transfers
 5. Implement additional security features
 6. Optimize performance and reduce bundle size
+
+## Testnet Testing Guide
+
+To proceed with testnet testing, follow these steps:
+
+1. Install MetaMask or another Ethereum wallet that supports testnets.
+2. Switch to a testnet like Goerli or Sepolia in your wallet.
+3. Get some testnet ETH from a faucet (search for "Goerli faucet" or "Sepolia faucet").
+4. Update the app to connect to the testnet instead of mainnet.
+5. Use this wallet to interact with the app, allowing you to test real (but testnet) Ethereum transactions.
+
+This approach will provide a more comprehensive testing environment, allowing you to verify both the UI/UX and actual blockchain interactions.
 
 ## Running the Project
 

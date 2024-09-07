@@ -1,4 +1,8 @@
-const { createRunOncePlugin } = require("expo/config-plugins");
+const {
+  AndroidConfig,
+  withAndroidManifest,
+  createRunOncePlugin,
+} = require("expo/config-plugins");
 
 const queries = {
   package: [
@@ -12,16 +16,14 @@ const queries = {
 };
 
 const withAndroidManifestService = (config) => {
-  return {
-    ...config,
-    android: {
-      ...config.android,
-      manifest: {
-        ...config.android.manifest,
-        queries,
-      },
-    },
-  };
+  return withAndroidManifest(config, (config) => {
+    config.modResults.manifest = {
+      ...config.modResults.manifest,
+      queries,
+    };
+
+    return config;
+  });
 };
 
 module.exports = createRunOncePlugin(

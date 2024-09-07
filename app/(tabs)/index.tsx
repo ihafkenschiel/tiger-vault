@@ -1,13 +1,13 @@
 import { StyleSheet } from "react-native";
 import { Text, View } from "../../components/Themed";
+import { W3mButton } from "@web3modal/wagmi-react-native";
 
 export default function TabOneScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
+      <Text style={styles.title}>TigerVault</Text>
       <View style={styles.separator} />
-      <Text>Open up the code for this screen:</Text>
-      <Text>app/(tabs)/index.tsx</Text>
+      <W3mButton />
     </View>
   );
 }
